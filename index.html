@@ -8,17 +8,16 @@
 </head>
 <body>
     <p>Estamos há [<span id="time-since-downtime">0</span>] dias sem downtime.</p>
-    <p>Nosso <i>record</i> é de [<span id="best">0</span>] dias.</p>
+    <p>Nosso máximo foi [<span id="best">0</span>] dias.</p>
 
     <script src="time-converter.js"></script>
     <script>
-        fetch('board.json')
+        const now = new Date();
+        fetch(`https://raw.githubusercontent.com/guilhermednt/downtime-board/master/board.json?${now.getTime()}`)
             .then(res => res.json())
             .then(board => {
-                const diff = new Date() - new Date(board.last);
-
                 document.getElementById('best').innerHTML = board.best;
-                document.getElementById('time-since-downtime').innerHTML = toTimeUnit(diff, 'days');
+                document.getElementById('time-since-downtime').innerHTML = toTimeUnit(now - new Date(board.last), 'days');
             });
     </script>
 </body>
